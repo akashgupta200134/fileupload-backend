@@ -1,19 +1,17 @@
 const mongoose = require("mongoose");
-
-const FileSchema = require("../model/fileschema");
 require("dotenv").config();
 
-exports.dbconnect = () => {
-  mongoose
-    .connect(process.env.DB_URL, {
+exports.dbconnect = async () => {
+  try {
+    await mongoose.connect(process.env.DB_URL, {
       useNewUrlParser: true,
-      userUnifiedTopology: true,
-    })
-    .then(console.log("Database connected Successfully"))
-    .catch((error) => {
-      console.log(error);
-      console.log("Database connection issues");
-      process.exit(1);
-
+      useUnifiedTopology: true,
     });
+    console.log("Database connected successfully");
+  }
+   catch (error) {
+    console.error("Database connection failed:", error);
+    process.exit(1);
+  }
 };
+
